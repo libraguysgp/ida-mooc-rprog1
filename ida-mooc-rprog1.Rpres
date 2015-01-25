@@ -1,0 +1,698 @@
+R Programming - Part 1
+========================================================
+author: Eugene Teo
+date: January 26th, 2015
+
+Who am i?
+========================================================
+
+![ida-mooc-2014](ida-mooc-2014.png)
+
+[@eugeneteo](http://www.twitter.com/eugeneteo)
+
+Week 1
+========================================================
+Getting started and R nuts and bolts
+
+Install R on a Mac
+========================================================
+
+Install R with [Homebrew](http://brew.sh/) - the missing package manager for OS X
+
+```{shell}
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/ \
+   install/master/install)"
+$ brew tap homebrew/science
+$ brew install gcc
+$ brew install Caskroom/cask/xquartz
+$ brew install R
+```
+
+Then install the [RStudio Preview](http://www.rstudio.com/products/rstudio/download/preview/)
+
+Fix the warning messages on startup
+========================================================
+
+```{shell}
+$ defaults write org.R-project.R force.LANG \
+   en_US.UTF-8
+$ export LC_ALL=en_US.UTF-8\nexport \
+   LANG=en_US.UTF-8 >> ~/.bash_profile
+$ . ~/.bash_profile
+```
+
+Read [Installing R on Mac - Warning messages: Setting LC_CTYPE failed, using “C”](http://stackoverflow.com/questions/9689104/installing-r-on-mac-warning-messages-setting-lc-ctype-failed-using-c)
+
+Data structures
+========================================================
+
+```{r, echo=FALSE, results = "asis"}
+#library(pander)
+#
+#table <- matrix(
+#   c("1d", "2d", "nd",
+#     "Atomic vector", "Matrix", "Array",
+#     "List", "Data frame", ""),
+#   nrow = 3, ncol = 3
+#)
+#colnames(table) <- c("", "Homogeneous", "Heterogeneous")
+#pander(table, style = "rmarkdown")
+```
+
+Data structures are organised by:
+* their dimensionality (1d, 2d, or nd), and
+* if they are homogeneous, or heterogeneous
+
+R has no zero-dimensional, or scalar types
+
+Individual numbers or strings are actually vectors of length one
+
+```{r}
+length((x <- 1))
+```
+
+Vectors
+========================================================
+
+There are two types of 1d vectors:
+* atomic vectors (homogeneous)
+* lists (heterogeneous)
+
+Both share three common properties:
+* Type, ```typeof()```, what it is
+* Length, ```length()```, how many elements it contains
+* Attributes, ```attributes()```, additional metadata
+
+Atomic vectors
+========================================================
+
+There are four common types of atomic vectors:
+* logical
+* integer
+* double
+* character
+
+```{r}
+log_var <- c(TRUE, FALSE, T, F)
+char_var <- c(letters[1:3])
+int_var <- c(1L, 2L, 3L)
+dbl_var <- c(1, 2.1, 3.2)
+```
+
+Atomic vectors
+========================================================
+
+Atomic vectors are always flat
+
+```{r}
+(x <- c(1, 2, 3, 4))
+(y <- c(1, c(2, c(3, c(4)))))
+```
+
+Coercion
+========================================================
+
+All elements in an atomic vector must be of the same type. If not, coercion will occur from the least to the most flexible types: logical, integer, double, and character
+
+```{r}
+(c("a", 1))
+typeof(c(T, 1L, 2.0))
+```
+
+Lists
+========================================================
+
+1d heterogeneous vector
+
+```{r}
+str(x <- list(1:3, "a", c(T, F, T), c(1.2, 3.4)))
+```
+
+Lists
+========================================================
+
+```{r}
+(x <- list(1:3, "a", c(T, F, T), c(1.2, 3.4)))
+```
+
+Lists
+========================================================
+
+```{r}
+str(x <- list(a = 1:3, b= "a", c = c(T, F, T), d = c(1.2, 3.4)))
+```
+
+Lists
+========================================================
+
+```{r}
+x <- list(a = 1:3, b= "a", c = c(T, F, T), d = c(1.2, 3.4))
+x[[1]]
+x$a
+```
+
+Lists
+========================================================
+
+Lists are sometimes called recursive vectors
+
+A list can contain other lists
+
+```{r}
+str(x <- list(list(list(list(list())))))
+```
+
+Matrices
+========================================================
+
+2d homogeneous data structure
+
+```{r}
+(x <- matrix(1:6, nrow = 2, ncol = 3))
+dim(x)
+```
+
+Matrices
+========================================================
+
+```{r}
+x <- matrix(1:6, nrow = 2, ncol = 3)
+# colnames(x) <- c("a", "b", "c")
+# rownames(x) <- c("A", "B")
+dimnames(x) <- list(c("A", "B"), # row
+                    c("a", "b", "c"))
+x
+```
+
+cbind'ing and rbind'ing
+========================================================
+
+```{r}
+x <- 1:3
+y <- 10:12
+cbind(x, y)
+rbind(x, y)
+```
+
+Factors
+========================================================
+
+Used to represent categorical variables
+
+May be represented by numbers, but does not make sense to add, substract, average, etc
+
+```{r}
+(x <- factor(c("A", "B", "AB", "O")))
+str(x <- factor(c("A", "B", "AB", "O")))
+```
+
+Factors
+========================================================
+
+```{r}
+x <- factor(c("A", "B", "AB", "O"))
+nlevels(x)
+attributes(x)
+```
+
+Factors
+========================================================
+
+```{r}
+x <- factor(c("A", "B", "AB", "O"))
+attr(x, "levels") # levels(x)
+attr(x, "class") # class(X)
+```
+
+Missing values
+========================================================
+
+```{r}
+x <- c(1, 2, NA, 4, 5)
+is.na(x)
+table(is.na(x))
+```
+
+Data frames
+========================================================
+
+2d heterogeneous data structure
+
+Can be converted into matrix using ```data.matrix()```
+
+```{r}
+(x <- data.frame(a = 1:3, b = c(T, F, T)))
+dim(x)
+```
+
+Data frames
+========================================================
+
+Remember that all elements in a matrix must be of the same type
+
+```{r}
+(x <- data.matrix(data.frame(a = 1:3, b = c(T, F, T))))
+
+```
+
+Reading data
+========================================================
+
+```{r}
+(x <- read.csv(text = "value\n12\n1\n.\n9"))
+typeof(x$value)
+```
+
+Reading data
+========================================================
+
+```{r}
+x <- read.csv(text = "value\n12\n1\n.\n9")
+as.double(x$value)
+# ??
+str(x$value)
+```
+
+That's not what we want...
+
+Reading data
+========================================================
+
+Second try
+
+```{r}
+(x <- read.csv(text = "value\n12\n1\n.\n9", na.strings = "."))
+as.double(x$value)
+```
+
+Reading data
+========================================================
+
+Third try
+
+```{r}
+str(x <- read.csv(text = "value\n12\n1\n.\n9", na.strings = ".",
+               stringsAsFactors = FALSE))
+```
+
+Subsetting
+========================================================
+
+```{r}
+x <- c(letters) # built-in constant
+x[1]
+x[1:5]
+x[x > "s"] # return the TRUEs
+```
+
+Subsetting vectors
+========================================================
+
+```{r}
+x <- c(letters)
+table(y <- x > "w")
+x[y] # return the TRUEs
+```
+
+Subsetting lists
+========================================================
+
+```{r}
+x <- list(foo = 1:4, bar = 0.6)
+x[1]
+x[[1]]
+x[["foo"]]
+```
+
+Subsetting lists
+========================================================
+
+```{r}
+x <- list(foo = 1:4, bar = 0.6, baz = "hello")
+x[c(1, 3)] # select 1st and 3rd vectors
+```
+
+Subsetting lists
+========================================================
+
+```{r}
+x <- list(foo = 1:4, bar = 0.6, baz = "hello")
+x[[c(1, 4)]]
+x[[c(2, 1)]]
+x[[c(3, 1)]]
+```
+
+Subsetting matrices
+========================================================
+
+```{r}
+(x <- matrix(1:6, 2, 3))
+x[1,] # returns a vector
+x[,1] # returns a vector
+```
+
+Subsetting matrices
+========================================================
+
+```{r}
+(x <- matrix(1:6, 2, 3))
+x[1, 2] # return vector of length 1
+x[1, 2, drop = FALSE] # return 1x1 matrix
+```
+
+Removing NA values
+========================================================
+
+```{r}
+x <- c(1, 2, NA, 4, NA, 5)
+(bad <- is.na(x))
+(x[!bad])
+(x[bad])
+```
+
+Removing NA values
+========================================================
+
+```{r}
+x <- c(1, 2, NA, 4, NA, 5)
+y <- c("a", "b", NA, "d", NA, NA)
+(good <- complete.cases(x, y))
+(x[good]) # show all good cases
+(y[good][1:2]) # show 2 of 3 good cases
+```
+
+Removing NA values
+========================================================
+
+```{r}
+data("airquality")
+class(airquality)
+good <- complete.cases(airquality)
+(airquality[good, ][1:6, ])
+```
+
+Week 2
+========================================================
+
+Programming with R
+
+Control structures - if/else
+========================================================
+
+```{r}
+x <- 5
+if (x > 3) {
+   y <- 10
+} else {
+   y < 0
+}
+y
+```
+
+Control structures - if/else
+========================================================
+
+```{r}
+x <- 5
+y <- if (x > 3) {
+   10
+} else {
+   0
+}
+y
+```
+
+Control structures - if/else
+========================================================
+
+```{r}
+x <- 5
+y <- ifelse(x > 3, 10, 0)
+y
+```
+
+Control structures - for
+========================================================
+
+```{r}
+for (a in 1:10)
+   print(a)
+```
+
+Control structures - for
+========================================================
+
+```{r}
+(x <- c(letters[1:3])) # built-in constant
+for (a in 1:length(x))
+   print(x[a])
+```
+
+Control structures - for
+========================================================
+
+```{r}
+x <- c(letters[1:3])
+for (a in seq_along(x)) # element indices of x
+   print(x[a])
+
+for (letter in x)
+   print(letter)
+```
+
+Control structures - for
+========================================================
+
+```{r}
+(x <- matrix(1:6, nrow = 2, ncol = 3))
+for (a in 1:nrow(x))
+   for (b in 1:ncol(x))
+      print(x[a, b])
+```
+
+Control structures - for
+========================================================
+
+```{r}
+x <- matrix(1:6, nrow = 2, ncol = 3)
+for (a in seq_len(nrow(x))) # sh's `seq 1 n`
+   for (b in seq_len(ncol(x)))
+      print(x[a, b])
+```
+
+Control structures - for
+========================================================
+
+```{r}
+x <- c(letters) # 26
+for (letter in seq_along(x)) {
+   if (letter == 20) break # stop at 20th
+   if (letter %% 2 == 0) next # skip even
+   print(x[letter])
+}
+```
+
+seq vs seq_along
+========================================================
+
+```{r}
+a <- c(8, 9, 10)
+b <- 10
+
+seq(a)
+seq_along(a) # element indices of x
+```
+
+seq vs seq_along
+========================================================
+
+```{r}
+a <- c(8, 9, 10)
+b <- 10
+
+seq(b) # became seq_len? :-(
+seq_along(b) # element indices of x
+```
+
+Read [seq vs seq_along. When will using seq cause unintended results?](http://stackoverflow.com/questions/13732062/seq-vs-seq-along-when-will-using-seq-cause-unintended-results)
+
+Control structures - while
+========================================================
+
+```{r}
+count <- 0
+while (count < 10) {
+   print(count)
+   count <- count + 1
+}
+```
+
+Control structures - while
+========================================================
+
+```{r}
+x <- 5
+while (x > 2 && x < 6 ) {
+   print(x)
+   coin <- rbinom(1, 1, 0.5) # n, size, prob
+   if (coin == 1) { # random walk
+      x <- x + 1
+   } else {
+      x <- x - 1
+   }
+}
+```
+
+Functions
+========================================================
+
+```{r}
+args(lm)
+```
+
+Unnamed arguments are matched in order they are listed in the function definition
+
+```{r, eval = FALSE}
+lm(data = mydata, y ~ x, model = FALSE, 1:100)
+lm(y ~ x, mydata, 1:100, model = FALSE)
+```
+
+Functions
+========================================================
+
+```{r}
+f <- function(a, b = 1, c = 2, d = NULL) {
+
+}
+```
+
+If no default value, you can set the argument value to NULL
+
+Functions - lazy evaluation
+========================================================
+
+Arguments to functions are evaluated only as needed
+
+```{r}
+f <- function(a, b) {
+   a ^ 2
+}
+f(10)
+```
+
+Functions - lazy evaluation
+========================================================
+
+```{r, eval = FALSE}
+f <- function(a, b) {
+   print(a)
+   print(b)
+}
+f(10)
+```
+
+```{r, echo=FALSE}
+print(10)
+```
+
+```{r, echo=FALSE}
+cat("Error in print(b) : argument \"b\" is missing, with no default")
+```
+
+Functions
+========================================================
+
+The ```...``` argument indicates a variable number of arguments that are usually passed on to other functions
+
+Also necessary if the number of arguments passed to the function cannot be known in advance
+
+```{r}
+args(plot)
+```
+
+```{r}
+myplot <- function(x, y, type = "l", ...) {
+   plot(x, y, type, ...)
+}
+```
+
+Functions
+========================================================
+
+Any arguments appear after ```...``` cannot be partially matched
+
+```{r}
+args(paste)
+paste("a", "b", sep = ":")
+paste("a", "b", se = ":")
+```
+
+Dates and times
+========================================================
+
+Dates are stored internally as the # of days since 1970-01-01
+
+Times are stored internally as the # of seconds since 1970-01-01
+
+```{r}
+(date <- as.Date("1970-01-01"))
+```
+
+Dates and times
+========================================================
+
+Times are represented using:
+* the ```POSIXct``` class (useful if you want to store times in a data frame)
+* the ```POSIXlt``` class (useful if you need information like the day of the week,
+day of the year, month, day of the month)
+
+Dates and times
+========================================================
+
+```{r}
+(x <- Sys.Date())
+(y <- as.POSIXct(x))
+unclass(y)
+```
+
+Dates and times
+========================================================
+
+```{r}
+x <- Sys.Date()
+(y <- as.POSIXlt(x))
+names(unclass(y))
+y$mday
+```
+
+Dates and times
+========================================================
+
+```{r}
+datestring <- c("January 10, 2015 10:40", "December 9, 2014 9:10")
+(x <- strptime(datestring, "%B %d, %Y %H:%M"))
+class(x)
+```
+
+Read ```?strptime``` for more details
+
+Dates and times
+========================================================
+
+```{r}
+(x <- as.POSIXlt(as.Date("2015-01-01")))
+(y <- strptime("9 Jan 2014 11:34:21", "%d %b %Y %H:%M:%S"))
+x - y
+```
+
+References
+========================================================
+
+[R Programming](https://www.coursera.org/course/rprog) by Roger D. Peng, Jeff Leek and Brian Caffo
+
+[Advanced R](http://www.amazon.com/Advanced-Chapman-Hall-Hadley-Wickham/dp/1466586966/) by Hadley Wickham (you rock!)
+
+Thanks
+========================================================
+
+Join our [iDA Data Sci MOOC](https://www.facebook.com/groups/iDADataSciMOOC/) Facebook group!
