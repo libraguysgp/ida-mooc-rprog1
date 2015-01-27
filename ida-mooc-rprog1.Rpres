@@ -8,7 +8,7 @@ Who am i?
 
 ![ida-mooc-2014](ida-mooc-2014.jpg)
 
-[\@eugeneteo](http://www.twitter.com/eugeneteo)
+[@eugeneteo](http://www.twitter.com/eugeneteo)
 
 Week 1
 ========================================================
@@ -42,6 +42,10 @@ $ . ~/.bash_profile
 ```
 
 Read [Installing R on Mac - Warning messages: Setting LC_CTYPE failed, using “C”](http://stackoverflow.com/questions/9689104/installing-r-on-mac-warning-messages-setting-lc-ctype-failed-using-c)
+
+Data structures
+========================================================
+![r-data-structures](r-data-structures.jpg)
 
 Data structures
 ========================================================

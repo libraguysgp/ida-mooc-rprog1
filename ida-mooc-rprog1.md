@@ -20,8 +20,7 @@ Install R on a Mac
 Install R with [Homebrew](http://brew.sh/) - the missing package manager for OS X
 
 ```{shell}
-$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/ \
-   install/master/install)"
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 $ brew tap homebrew/science
 $ brew install gcc
 $ brew install Caskroom/cask/xquartz
@@ -34,14 +33,16 @@ Fix the warning messages on startup
 ========================================================
 
 ```{shell}
-$ defaults write org.R-project.R force.LANG \
-   en_US.UTF-8
-$ export LC_ALL=en_US.UTF-8\nexport \
-   LANG=en_US.UTF-8 >> ~/.bash_profile
+$ defaults write org.R-project.R force.LANG en_US.UTF-8
+$ export LC_ALL=en_US.UTF-8\nexport LANG=en_US.UTF-8 >> ~/.bash_profile
 $ . ~/.bash_profile
 ```
 
 Read [Installing R on Mac - Warning messages: Setting LC_CTYPE failed, using “C”](http://stackoverflow.com/questions/9689104/installing-r-on-mac-warning-messages-setting-lc-ctype-failed-using-c)
+
+Data structures
+========================================================
+![r-data-structures](r-data-structures.jpg)
 
 Data structures
 ========================================================
@@ -823,7 +824,7 @@ x <- 5
 if (x > 3) {
    y <- 10
 } else {
-   y < 0
+   y <- 0
 }
 y
 ```
@@ -1103,6 +1104,8 @@ while (x > 2 && x < 6 ) {
 
 ```
 [1] 5
+[1] 4
+[1] 5
 ```
 
 Functions
@@ -1267,7 +1270,7 @@ Dates and times
 ```
 
 ```
-[1] "2015-01-26"
+[1] "2015-01-27"
 ```
 
 ```r
@@ -1275,7 +1278,7 @@ Dates and times
 ```
 
 ```
-[1] "2015-01-26 08:00:00 SGT"
+[1] "2015-01-27 08:00:00 SGT"
 ```
 
 ```r
@@ -1296,7 +1299,7 @@ x <- Sys.Date()
 ```
 
 ```
-[1] "2015-01-26 UTC"
+[1] "2015-01-27 UTC"
 ```
 
 ```r
@@ -1312,7 +1315,7 @@ y$mday
 ```
 
 ```
-[1] 26
+[1] 27
 ```
 
 Dates and times
