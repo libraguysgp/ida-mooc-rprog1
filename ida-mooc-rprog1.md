@@ -8,7 +8,7 @@ Who am i?
 
 ![ida-mooc-2014](ida-mooc-2014.jpg)
 
-[\@eugeneteo](http://www.twitter.com/eugeneteo)
+[@eugeneteo](http://www.twitter.com/eugeneteo)
 
 Week 1
 ========================================================
@@ -20,7 +20,8 @@ Install R on a Mac
 Install R with [Homebrew](http://brew.sh/) - the missing package manager for OS X
 
 ```{shell}
-$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/ \
+   install/master/install)"
 $ brew tap homebrew/science
 $ brew install gcc
 $ brew install Caskroom/cask/xquartz
@@ -33,8 +34,10 @@ Fix the warning messages on startup
 ========================================================
 
 ```{shell}
-$ defaults write org.R-project.R force.LANG en_US.UTF-8
-$ export LC_ALL=en_US.UTF-8\nexport LANG=en_US.UTF-8 >> ~/.bash_profile
+$ defaults write org.R-project.R force.LANG \
+   en_US.UTF-8
+$ export LC_ALL=en_US.UTF-8\nexport \
+   LANG=en_US.UTF-8 >> ~/.bash_profile
 $ . ~/.bash_profile
 ```
 
@@ -1104,8 +1107,6 @@ while (x > 2 && x < 6 ) {
 
 ```
 [1] 5
-[1] 4
-[1] 5
 ```
 
 Functions
@@ -1270,7 +1271,7 @@ Dates and times
 ```
 
 ```
-[1] "2015-01-27"
+[1] "2015-02-07"
 ```
 
 ```r
@@ -1278,7 +1279,7 @@ Dates and times
 ```
 
 ```
-[1] "2015-01-27 08:00:00 SGT"
+[1] "2015-02-07 08:00:00 SGT"
 ```
 
 ```r
@@ -1286,7 +1287,7 @@ unclass(y)
 ```
 
 ```
-[1] 1.422e+09
+[1] 1423267200
 ```
 
 Dates and times
@@ -1299,7 +1300,7 @@ x <- Sys.Date()
 ```
 
 ```
-[1] "2015-01-27 UTC"
+[1] "2015-02-07 UTC"
 ```
 
 ```r
@@ -1315,7 +1316,7 @@ y$mday
 ```
 
 ```
-[1] 27
+[1] 7
 ```
 
 Dates and times
@@ -1366,7 +1367,7 @@ x - y
 ```
 
 ```
-Time difference of 356.9 days
+Time difference of 356.8511 days
 ```
 
 References
